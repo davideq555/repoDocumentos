@@ -1,8 +1,9 @@
 <x-slot name="header">
-    <h1 class="text-gray-800">Todas las categorias de los ducumentos</h1>
+    <h1 class="font-semibold text-xl text-gray-800 leading-tight">Todas las categorias de los ducumentos</h1>
 </x-slot>
 <!-- component 
-Resolver alineacion de la tabla-->
+Resolver alineacion de la tabla
+y modal q me elimina la tabla-->
 <div class="text-gray-900 container w-1/2">
     <div class="p-4 flex">
         <button type="button" 
