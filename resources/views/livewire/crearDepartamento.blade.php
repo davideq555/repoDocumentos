@@ -5,15 +5,15 @@
         <div class="relative py-8 px-5 md:px-10 bg-white shadow-md rounded border border-gray-400">
 
             <div class="w-full flex justify-start text-gray-600 mb-3">
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAAAvUlEQVRoge3YQQ6CMBSE4R/CJYC7eQzB84mHYqULwJCmoXVhmOp8yUtYsHhDW5o8MDMzs6gH8BSvKRWiF2gyt7p943UQ5JJKKiTaaw/cgJnzv3RuzcDIbmVKOBOpmqr1oXjhGSmWg6hxEDXNB+9WX+viWNZf9WdWxPeIGgdR4yBqfI+o8T2ixkHUOIiammUcVLr3CLUDBsob0F0JRqebUaDB3BpiATatQIO51R4FgWW/nd1kqu6pEGZmZn/pBQ4DZEv+U6CwAAAAAElFTkSuQmCC">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAABb0lEQVRoge2ZPUoDURRGT6KIgQhaaKGVnZ2ljVtwC9bpXIKW2igBV+AW1B0IlnaChZUWI0QLi4BojMXcQPIyL/PjZN6N3gNfk7x5+U5xLwkB4/+wCLSAB0lLXpsZloAD4BnoO3kBjoCVYO0ysEZc8o1xATfvQBvYCNLUwyZxqS7pAm4+gAtgq/LWQ2xLiU/yC7jpAZfATpUCu/Kh3yUIJOUG2JtW+bpcfjul8km5A/aBuTIEFuSy+woF3DwSb8FCq7spDz8FFHATEW/F5SwCq3L4VUFxXware90ncUixFRoqXekMQG1I5IuSBqtCesA8jIr0w3T5NbX0I4YeTgg/zL4c5xFpAtcKSru5km5jZBmUpCWQ9FyWc2XeNUJ90puzhIlow0S0YSLaMBFtmIg2TEQbJmIYxWgA50CH8D9vB+lIp0YekTMFxX05zSMSKSjsS5RHxNCAxgEvNPiaBzzX4Gse8NTB/zN/K9h3LcOYzA9CLFQRgQpHYQAAAABJRU5ErkJggg==">
             </div>
-            <h1 class="text-gray-800 font-lg font-bold tracking-normal leading-tight mb-4">Añadir una nueva categoria</h1>
-            <label for="tipo" class="text-gray-800 text-sm font-bold leading-tight tracking-normal">Tipo</label>
-            <input id="tipo" 
+            <h1 class="text-gray-800 font-lg font-bold tracking-normal leading-tight mb-4">Añadir un nuevo departamento</h1>
+            <label for="nombre" class="text-gray-800 text-sm font-bold leading-tight tracking-normal">Nombre</label>
+            <input id="nombre" 
                 type="text"
                 class="mb-5 mt-2 text-gray-600 focus:outline-none focus:border focus:border-indigo-700 font-normal w-full h-10 flex items-center pl-3 text-sm border-gray-300 rounded border" 
-                placeholder="Documento" 
-                wire:model="tipo"/>
+                placeholder="Por ej. Quimica" 
+                wire:model="nombre"/>
             <div class="flex items-center justify-start w-full">
                 <x-jet-button 
                     wire:click.prevent="guardar()">

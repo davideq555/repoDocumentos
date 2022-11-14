@@ -18,17 +18,17 @@ return new class extends Migration
 
             $table->string('titulo',100);
             $table->string('resumen');
-            $table->string('url');
+            $table->string('url')->unique();
             $table->string('anio',4);
             $table->string('formato');
             $table->string('idioma');
-            $table->string('facultad');
             $table->boolean('publico')->default(true);
+            $table->unsignedBigInteger('departamento_id');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('categoria_id')->nullable();
             
+            $table->foreign('departamento_id')->references('id')->on('departamentos');
             $table->foreign('user_id')->references('id')->on('users');
-            
             $table->foreign('categoria_id')->references('id')->on('categorias');            
             $table->timestamps();
         });

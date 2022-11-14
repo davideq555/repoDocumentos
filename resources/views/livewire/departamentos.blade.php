@@ -1,5 +1,6 @@
 <x-slot name="header">
-    <h1 class="font-semibold text-xl text-gray-800 leading-tight">Todas las categorias de los ducumentos</h1>
+    <h1 class="font-semibold text-xl text-gray-800 leading-tight">
+        Todas los Departamento de la Facultad de Ciencias Exactas</h1>
 </x-slot>
 <div class="py-12">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -15,7 +16,7 @@
         </x-jet-button>
         {{-- modal en estado cerrado  --}}
         @if($modal)
-            @include('livewire.crearCategoria')
+            @include('livewire.crearDepartamento')
         @endif
     </div>
     <div class="px-3 py-4 flex  justify-center">
@@ -23,16 +24,16 @@
             <thead>
                 <tr class="border-b">
                     <th class="text-left p-3 px-5">Id</th>
-                    <th class="text-left p-3 px-5">Tipo</th>
+                    <th class="text-left p-3 px-5">Departamento</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($categorias as $item)                        
+                @foreach ($departamentos as $item)                        
 
                 <tr class="border-b hover:bg-orange-100 bg-gray-100">
                     <td class="p-3 px-5">{{ $item->id}}</td>
-                    <td class="p-3 px-5">{{ $item->tipo}}</td>
+                    <td class="p-3 px-5">{{ $item->nombre}}</td>
                     <td class="p-3 px-5 flex justify-center">
                         <button type="button"
                             wire:click="editar({{$item->id}})" 

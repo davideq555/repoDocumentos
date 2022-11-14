@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Categorias;
+use App\Http\Livewire\Departamentos;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,7 +16,7 @@ use App\Http\Livewire\Categorias;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 Route::middleware([
     'auth:sanctum',
@@ -26,4 +27,5 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
     Route::get('/categorias', Categorias::class)->name('categorias');
+    Route::get('/departamentos', Departamentos::class)->name('departamentos');
 });
