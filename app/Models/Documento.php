@@ -10,7 +10,7 @@ class Documento extends Model
     use HasFactory;
 
     protected $fillable = [
-        'titulo','autor', 'resumen', 'url','anio','idioma','publico',
+        'titulo','autor', 'formato', 'resumen', 'url','anio','idioma','publico',
         'departamento_id',
         'user_id',
         'categoria_id',

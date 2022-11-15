@@ -2,21 +2,38 @@
 
 namespace App\Http\Livewire;
 
+use Illuminate\Support\Facades\Auth;
+
 use Livewire\Component;
 use App\Models\Documento;
+use App\Models\Categoria;
+use App\Models\Departamento;
 
 class Documentos extends Component
 {
     //añadir todas los campos de los documenntos + variable q contenga todos
-    public $documentos, $titulo, $autor, $anio, $idioma, $publico, $departamento,
-    $categoria, $usuario, $id_documento;
-    //Pantalla emergente para crear, editar y confirmar eliminacion
+    public $documentos, $titulo, $autor, $anio, $idioma, $publico, $id_departamento,
+    $id_categoria, $id_documento;
+    //variables para traer todas las categorias y departamentos
+    public $categorias,$departamentos;
+    //Pantalla emergente para crear, editar, ver mas detalles y confirmar eliminacion
     public $modal = false;
     public $modal_confirmar = false;
+    public $detalles = false;
+
+    protected $rules = [
+        'titulo' => 'required|max:100',
+        'autor' => 'required|max:100',
+        'anio' => 'required|number|max:4',
+        'idioma' => 'required|max:100',
+    ];
+
  
     public function render()
     {
         $this->documentos = Documento::all();
+        $this->categorias = Categoria::all();
+        $this->departamentos = Departamento::all();
         return view('livewire.documentos');
     }
 
@@ -47,21 +64,23 @@ class Documentos extends Component
         $this->autor = '';
         $this->anio = '';
         $this->idioma = '';
-        $this->departamento = null;
-        $this->categoria = null;
-        $this->usuario = null;
+        $this->id_departamento = null;
+        $this->id_categoria = null;
     }
     public function guardar()
     {
-        Departamento::updateOrCreate(['id'=>$this->id_documento],
+        Documento::updateOrCreate(['id'=>$this->id_documento],
             [
                 'titulo' => $this->titulo,
-                'autor' => $this->titulo,
+                'resumen' => 'Default',
+                'url' => 'url',
+                'autor' => $this->autor,
                 'anio' => $this->anio,
                 'idioma' => $this->idioma,
-                'departamento' => $this->titulo,
-                'categoria' => $this->titulo,
-                'publico' => TRUE,
+                'departamento_id' => $this->id_departamento,
+                'categoria_id' => $this->id_categoria,
+                'user_id' => auth()->id(),
+                'formato' => 'pdf',
             ]);
          
          session()->flash('message',

@@ -38,29 +38,46 @@
                 </tr>
             </thead>
             <tbody>
-                @if (!$documentos)
+                @if (!is_null($documentos))
                     @foreach ($documentos as $item)                        
+                        <tr class="border-b hover:bg-orange-100 bg-gray-100">
+                            <td class="p-3 px-3">{{ $item->titulo}}</td>
+                            <td class="p-3 px-1">{{ $item->autor}}</td>
+                            <td class="p-3 px-1">{{ $item->idioma}}</td>
+                            <td class="p-3 px-1">{{ $item->departamento->nombre}}</td>
+                            <td class="p-3 px-1">{{ $item->categoria->tipo}}</td>
 
-                    <tr class="border-b hover:bg-orange-100 bg-gray-100">
-                        <td class="p-3 px-3">{{ $item->titulo}}</td>
-                        <td class="p-3 px-1">{{ $item->autor}}</td>
-                        <td class="p-3 px-1">{{ $item->idioma}}</td>
-                        <td class="p-3 px-1">{{ $item->departamento}}</td>
-                        <td class="p-3 px-1">{{ $item->categoria}}</td>
-
-                        <td class="p-3 px-5 flex justify-center">
-                            <button type="button"
-                                wire:click="editar({{$item->id}})" 
-                                class="mr-1 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded rounded-l-2xl focus:outline-none focus:shadow-outline">
-                                    Editar
-                            </button>
-                            <button type="button" 
-                                wire:click="eliminar({{$item->id}})" 
-                                class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded rounded-r-2xl focus:outline-none focus:shadow-outline">
-                                Borrar
-                            </button>
-                        </td>
-                    </tr>
+                            <td class="p-3 px-5 flex justify-center">
+                                <button type="button"
+                                    wire:click="$set('detalles',true)" 
+                                    class="mr-1 text-sm bg-green-700 hover:bg-green-800 text-white py-1 px-2 rounded rounded-l-2xl focus:outline-none focus:shadow-outline">
+                                        Ver +
+                                </button>
+                                <button type="button"
+                                    wire:click="editar({{$item->id}})" 
+                                    class="mr-1 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 focus:outline-none focus:shadow-outline">
+                                        Editar
+                                </button>
+                                <button type="button" 
+                                    wire:click="eliminar({{$item->id}})" 
+                                    class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded rounded-r-2xl focus:outline-none focus:shadow-outline">
+                                    Borrar
+                                </button>
+                            </td>
+                        </tr>
+                        @if ($detalles)
+                            <tr class="border-b bg-cyan-100 hover:bg-green-100 bg-gray-100">
+                                <td colspan="5" class="p-3 px-3">
+                                    Resumen: {{$item->resumen}}; Subido por: {{$item->user->name}}; Url: {{$item->url}};
+                                    Año: {{$item->anio}}
+                                </td>
+                                <td class="p-3 px-3 flex justify-center">
+                                    <x-jet-button class="ml-3" wire:click.prevent="$set('detalles',false)">
+                                        Cerrar
+                                    </x-jet-danger-button>
+                                </td>
+                            </tr>
+                        @endif
                     @endforeach
                     
                 @else
