@@ -3,7 +3,7 @@
         Documentos subidos al repositorio</h1>
 </x-slot>
 <div class="py-12">
-    <div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
            @if (session()->has('message'))
                <div class="p-3 bg-blue-900 text-white rounded shadow-lg">
