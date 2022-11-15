@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Categorias;
 use App\Http\Livewire\Departamentos;
+use App\Http\Livewire\Documentos;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,4 +29,5 @@ Route::middleware([
     })->name('dashboard');
     Route::get('/categorias', Categorias::class)->name('categorias');
     Route::get('/departamentos', Departamentos::class)->name('departamentos');
+    Route::get('/documentos', Documentos::class)->name('documentos');
 });

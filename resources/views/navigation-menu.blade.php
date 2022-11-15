@@ -11,8 +11,12 @@
             'active' => request()->routeIs('categorias')
         ],[
             'name' => 'Departamentos',
-            'route' => 'departamentos',
+            'route' => route('departamentos'),
             'active' => request()->routeIs('departamentos')
+        ],[
+            'name' => 'Documentos',
+            'route' => route('documentos'),
+            'active' => request()->routeIs('documentos')
         ],
 ];
 @endphp

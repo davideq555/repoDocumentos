@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
 
             $table->string('titulo',100);
+            $table->string('autor',100);
             $table->string('resumen');
             $table->string('url')->unique();
             $table->string('anio',4);

@@ -14,9 +14,14 @@
         <x-jet-button wire:click="crear()" type="button">
             Nuevo
         </x-jet-button>
-        {{-- modal en estado cerrado  --}}
+        {{-- modal de editar y crear  --}}
         @if($modal)
             @include('livewire.crearDepartamento')
+        @endif
+
+        {{-- modal de eliminacion  --}}
+        @if($modal_confirmar)
+            @include('livewire.confirmarEliminacion')
         @endif
     </div>
     <div class="px-3 py-4 flex  justify-center">
@@ -41,7 +46,7 @@
                                 Editar
                         </button>
                         <button type="button" 
-                            wire:click="borrar({{$item->id}})" 
+                            wire:click="eliminar({{$item->id}})" 
                             class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded rounded-r-2xl focus:outline-none focus:shadow-outline">
                             Borrar
                         </button>
