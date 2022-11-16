@@ -73,7 +73,7 @@ class Documentos extends Component
             [
                 'titulo' => $this->titulo,
                 'resumen' => 'Default',
-                'url' => 'url',
+                'url' => str_replace(' ','-',$this->titulo),
                 'autor' => $this->autor,
                 'anio' => $this->anio,
                 'idioma' => $this->idioma,

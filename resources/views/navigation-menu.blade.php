@@ -4,19 +4,23 @@
         [
             'name' => 'Inicio',
             'route' => route('dashboard'),
-            'active' => request()->routeIs('dashboard')
+            'active' => request()->routeIs('dashboard'),
+            'role' => 'Admin'
         ],[
             'name' => 'Categorias',
             'route' => route('categorias'),
-            'active' => request()->routeIs('categorias')
+            'active' => request()->routeIs('categorias'),
+            'role' => 'Admin'
         ],[
             'name' => 'Departamentos',
             'route' => route('departamentos'),
-            'active' => request()->routeIs('departamentos')
+            'active' => request()->routeIs('departamentos'),
+            'role' => 'Admin'
         ],[
             'name' => 'Documentos',
             'route' => route('documentos'),
-            'active' => request()->routeIs('documentos')
+            'active' => request()->routeIs('documentos'),
+            'role' => 'Colaborador'
         ],
 ];
 @endphp
@@ -31,19 +35,32 @@
                         <x-jet-application-logo class="block h-12 w-auto" />
                     </a>
                 </div>
-
+                {{-- @if (Auth::user()->hasRole('Admin'))
+                    es admin
+@else
+                no es admin
+@endif --}}
+@role('Admin')
+                es admin
+            @else
+                no es
+@endrole
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     @foreach ($nav_links as $nav_link)
-                        <x-jet-nav-link href="{{ $nav_link['route'] }}" :active="$nav_link['active']">
-                            {{ $nav_link['name'] }}
-                        </x-jet-nav-link>
+                        {{-- @if (Auth::user()->hasRole($nav_link['role'])) --}}
+                        @role($nav_link['role'])
+                            <x-jet-nav-link href="{{ $nav_link['route'] }}" :active="$nav_link['active']">
+                                {{ $nav_link['name'] }}
+                            </x-jet-nav-link>
+                        @endrole
+                        {{-- @endif --}}
                     @endforeach
                 </div>
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ml-6">
-                <!-- Teams Dropdown -->
+                {{-- <!-- Teams Dropdown -->
                 @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
                     <div class="ml-3 relative">
                         <x-jet-dropdown align="right" width="60">
@@ -91,7 +108,7 @@
                             </x-slot>
                         </x-jet-dropdown>
                     </div>
-                @endif
+                @endif --}}
 
                 <!-- Settings Dropdown -->
                 <div class="ml-3 relative">
@@ -206,7 +223,7 @@
                 </form>
 
                 <!-- Team Management -->
-                @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
+                {{-- @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
                     <div class="border-t border-gray-200"></div>
 
                     <div class="block px-4 py-2 text-xs text-gray-400">
@@ -234,7 +251,7 @@
                     @foreach (Auth::user()->allTeams() as $team)
                         <x-jet-switchable-team :team="$team" component="jet-responsive-nav-link" />
                     @endforeach
-                @endif
+                @endif --}}
             </div>
         </div>
     </div>
