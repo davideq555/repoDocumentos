@@ -17,6 +17,10 @@
         @if($modal)
             @include('livewire.crearCategoria')
         @endif
+        {{-- modal de eliminacion  --}}
+        @if($modal_confirmar)
+            @include('livewire.confirmarEliminacion')
+        @endif
     </div>
     <div class="px-3 py-4 flex  justify-center">
         <table class="w-full text-md bg-blue-300 shadow-md rounded mb-4">
@@ -40,7 +44,7 @@
                                 Editar
                         </button>
                         <button type="button" 
-                            wire:click="borrar({{$item->id}})" 
+                            wire:click="eliminar({{$item->id}})" 
                             class="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded rounded-r-2xl focus:outline-none focus:shadow-outline">
                             Borrar
                         </button>

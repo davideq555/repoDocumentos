@@ -9,6 +9,7 @@ class Categorias extends Component
 {
     public $categorias,$tipo,$id_categoria;
     public $modal = false;
+    public $modal_confirmar = false;
 
     public function render()
     {
@@ -20,12 +21,20 @@ class Categorias extends Component
         $this->limpiarCampos();
         $this->abrirModal();
     }
-
+    public function eliminar($id){
+        $this->modal_confirmar = $id;        
+    }
     public function abrirModal(){
         $this->modal= true;
     }
     public function cerrarModal(){
         $this->modal= false;
+    }
+    public function abrirModalConfirm(){
+        $this->modal_confirmar= true;
+    }
+    public function cerrarModalConfirm(){
+        $this->modal_confirmar= false;
     }
 
     public function limpiarCampos(){
@@ -53,6 +62,7 @@ class Categorias extends Component
     public function borrar($id){
         Categoria::find($id)->delete();
         session()->flash('message', 'Categoria eliminada correctamente');
+        $this->cerrarModalConfirm();
 
     }
 }

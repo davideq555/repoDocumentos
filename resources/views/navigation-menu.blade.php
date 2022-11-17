@@ -5,6 +5,11 @@
             'name' => 'Inicio',
             'route' => route('dashboard'),
             'active' => request()->routeIs('dashboard'),
+            'role' => 'Colaborador|Admin'
+        ],[
+            'name' => 'Usuarios',
+            'route' => '#',
+            'active' => request()->routeIs('usuarios'),
             'role' => 'Admin'
         ],[
             'name' => 'Categorias',
@@ -20,7 +25,7 @@
             'name' => 'Documentos',
             'route' => route('documentos'),
             'active' => request()->routeIs('documentos'),
-            'role' => 'Colaborador'
+            'role' => 'Colaborador|Admin'
         ],
 ];
 @endphp
@@ -35,20 +40,11 @@
                         <x-jet-application-logo class="block h-12 w-auto" />
                     </a>
                 </div>
-                {{-- @if (Auth::user()->hasRole('Admin'))
-                    es admin
-@else
-                no es admin
-@endif --}}
-@role('Admin')
-                es admin
-            @else
-                no es
-@endrole
+                {{-- @if (Auth::user()->hasRole('Admin')) Otra forma de ver el rol del usuario --}}
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     @foreach ($nav_links as $nav_link)
-                        {{-- @if (Auth::user()->hasRole($nav_link['role'])) --}}
+                        {{-- Muestro menu segun rol--}}
                         @role($nav_link['role'])
                             <x-jet-nav-link href="{{ $nav_link['route'] }}" :active="$nav_link['active']">
                                 {{ $nav_link['name'] }}
@@ -179,9 +175,11 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             @foreach ($nav_links as $nav_link)
+            @role($nav_link['role'])
                 <x-jet-responsive-nav-link href="{{ $nav_link['route'] }}" :active="$nav_link['active']">
                     {{ $nav_link['name'] }}
                 </x-jet-responsive-nav-link>
+            @endrole
             @endforeach
         </div>
 

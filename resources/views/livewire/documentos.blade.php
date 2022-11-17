@@ -56,7 +56,7 @@
                                 <button type="button"
                                     wire:click="editar({{$item->id}})" 
                                     class="mr-1 text-sm bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 focus:outline-none focus:shadow-outline">
-                                        Editar
+                                        <i class="fas fa-edit"> Editar</i>
                                 </button>
                                 <button type="button" 
                                     wire:click="eliminar({{$item->id}})" 
@@ -65,11 +65,17 @@
                                 </button>
                             </td>
                         </tr>
+                        {{-- Revisar q solo me abra un solo documentos --}}
                         @if ($detalles)
-                            <tr class="border-b bg-cyan-100 hover:bg-green-100 bg-gray-100">
-                                <td colspan="5" class="p-3 px-3">
+                            <tr class="border-b bg-cyan-100 hover:bg-green-100">
+                                <td colspan="4" class="p-3 px-3">
                                     Resumen: {{$item->resumen}}; Subido por: {{$item->user->name}}; Url: {{$item->url}};
                                     Año: {{$item->anio}}
+                                </td>
+                                <td>
+                                    <div class="modal-content">
+                                        <embed src="{{asset($item->url)}}.pdf" type="application/pdf" width="100%" height="600px" />
+                                    </div>
                                 </td>
                                 <td class="p-3 px-3 flex justify-center">
                                     <x-jet-button class="ml-3" wire:click.prevent="$set('detalles',false)">
@@ -88,6 +94,7 @@
                 
             </tbody>
         </table>
+
     </div>
 </div>
 </div>

@@ -8,18 +8,28 @@
             <div class="mb-4">
                 <x-jet-label value="Titulo del documento" for='titulo'/>
                 <x-jet-input type='text' name="titulo" class="w-full" wire:model='titulo' />
+                <x-jet-input-error for='titulo' class="mt-2" />
             </div>
             <div class="mb-4">
                 <x-jet-label value="Autor" for="autor"/>
                 <x-jet-input type='text' name="autor" class="w-full" wire:model='autor'/>
+                <x-jet-input-error for='autor' class="mt-2" />
             </div>
             <div class="mb-4">
-                <x-jet-label value="Anio" for="anio" />
+                <x-jet-label value="Año" for="anio" />
                 <x-jet-input type='number' name="anio" class="w-full" wire:model='anio' />
+                <x-jet-input-error for='anio' class="mt-2" />
             </div>
             <div class="mb-4">
                 <x-jet-label value="Idioma" for="idioma" />
                 <x-jet-input type='text' name="idioma" class="w-full" wire:model='idioma' />
+                <x-jet-input-error for='idioma' class="mt-2" />
+            </div>
+            <div class="mb-4">
+                <x-jet-label value="Documento en formato pdf" for="url" />
+                <x-jet-input type='file' name="url" class="w-full" wire:model='url' />
+                <div wire:loading wire:target="url" class="mt-2">Cargando...</div>
+                <x-jet-input-error for='url' class="mt-2" />
             </div>
             <div class="mb-4">
                 <x-jet-label value="Categoria" for="id_categoria" />

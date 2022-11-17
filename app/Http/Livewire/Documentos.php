@@ -8,12 +8,21 @@ use Livewire\Component;
 use App\Models\Documento;
 use App\Models\Categoria;
 use App\Models\Departamento;
+use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+use Livewire\WithPagination;
 
 class Documentos extends Component
 {
+    use WithFileUploads;
+    use WithPagination;
+
     //añadir todas los campos de los documenntos + variable q contenga todos
     public $documentos, $titulo, $autor, $anio, $idioma, $publico, $id_departamento,
     $id_categoria, $id_documento;
+    //Variable para guardar pdf
+    public $url;
     //variables para traer todas las categorias y departamentos
     public $categorias,$departamentos;
     //Pantalla emergente para crear, editar, ver mas detalles y confirmar eliminacion
@@ -21,11 +30,22 @@ class Documentos extends Component
     public $modal_confirmar = false;
     public $detalles = false;
 
+    //Validacion de campos (ver documentacion de liveware)
     protected $rules = [
-        'titulo' => 'required|max:100',
-        'autor' => 'required|max:100',
-        'anio' => 'required|number|max:4',
-        'idioma' => 'required|max:100',
+        'titulo' => 'required|min:6|max:100',
+        'autor' => 'required|max:40',
+        'anio' => 'numeric|max:4',
+        'idioma' => 'required|max:2',
+        'url' => 'required|file|max:150000|mimes:pdf'
+    ];
+
+    //Mensaje de campos relacionado a las reglas (ver documentacion de liveware)
+    protected $messages = [
+        'titulo' => 'El titulo es requerido con un minimo de 6 a 100 caracteres',
+        'autor' => 'Autor es requerido con un maximo de 40 caracteres',
+        'anio' => 'Requerido y solo se acepta numeros',
+        'idioma' => 'Solo se acepta 2 caracteres',
+        'url' => 'Seleccione un archivo pdf',
     ];
 
  
@@ -69,11 +89,17 @@ class Documentos extends Component
     }
     public function guardar()
     {
+        //primero valida y luego crea o actualiza
+        $this->validate();
+        //Hay q verificar que no exista una url igual, si existe, concatenar la cadena con -copia
+        // Manually specify a filename...
+        // $path = Storage::putFileAs('photos', new File('/path/to/photo'), 'photo.jpg');
+        $path = $this->url->storeAs('pdfs', str_replace(' ','-',$this->titulo), 'public');
         Documento::updateOrCreate(['id'=>$this->id_documento],
             [
                 'titulo' => $this->titulo,
                 'resumen' => 'Default',
-                'url' => str_replace(' ','-',$this->titulo),
+                'url' => $path,
                 'autor' => $this->autor,
                 'anio' => $this->anio,
                 'idioma' => $this->idioma,
