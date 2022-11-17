@@ -19,8 +19,8 @@ class Documentos extends Component
     use WithPagination;
 
     //añadir todas los campos de los documenntos + variable q contenga todos
-    public $documentos, $titulo, $autor, $anio, $idioma, $publico, $id_departamento,
-    $id_categoria, $id_documento;
+    public  $titulo, $autor, $anio, $idioma, $publico, $user, $pdf_url, $id_departamento,
+    $id_categoria, $id_documento, $resumen;
     //Variable para guardar pdf
     public $url;
     //variables para traer todas las categorias y departamentos
@@ -28,7 +28,9 @@ class Documentos extends Component
     //Pantalla emergente para crear, editar, ver mas detalles y confirmar eliminacion
     public $modal = false;
     public $modal_confirmar = false;
-    public $detalles = false;
+    public $modal_detalle = false;
+    //variable para busqueda
+    public $search;
 
     //Validacion de campos (ver documentacion de liveware)
     protected $rules = [
@@ -51,13 +53,18 @@ class Documentos extends Component
  
     public function render()
     {
-        $this->documentos = Documento::all();
-        $this->categorias = Categoria::all();
-        $this->departamentos = Departamento::all();
-        return view('livewire.documentos');
+        //$this->documentos = Documento::all();
+        return view('livewire.documentos', [
+            'documentos' => Documento::when(
+                $this->search, function( $query, $search){
+                    return $query->where('titulo','LIKE', "%$search%");
+                }
+            )->paginate(10),]);
     }
 
     public function crear(){
+        $this->categorias = Categoria::all();
+        $this->departamentos = Departamento::all();
         $this->limpiarCampos();
         $this->abrirModal();
     }
@@ -79,6 +86,13 @@ class Documentos extends Component
         $this->modal_confirmar= false;
     }
 
+    public function abrirModalDetalle(){
+        $this->modal_detalle= true;
+    }
+    public function cerrarModalDetalle(){
+        $this->modal_detalle= false;
+        $this->limpiarCampos();
+    }
     public function limpiarCampos(){
         $this->titulo = '';
         $this->autor = '';
@@ -86,6 +100,11 @@ class Documentos extends Component
         $this->idioma = '';
         $this->id_departamento = null;
         $this->id_categoria = null;
+        $this->url = '';
+        $this->user = null;
+        $this->publico = null;
+        $this->resumen = '';
+        $this->pdf_url = '';
     }
     public function guardar()
     {
@@ -94,7 +113,7 @@ class Documentos extends Component
         //Hay q verificar que no exista una url igual, si existe, concatenar la cadena con -copia
         // Manually specify a filename...
         // $path = Storage::putFileAs('photos', new File('/path/to/photo'), 'photo.jpg');
-        $path = $this->url->storeAs('pdfs', str_replace(' ','-',$this->titulo), 'public');
+        $path = $this->url->store('pdfs','public');
         Documento::updateOrCreate(['id'=>$this->id_documento],
             [
                 'titulo' => $this->titulo,
@@ -124,12 +143,30 @@ class Documentos extends Component
         $this->idioma = $depa->idioma;
         $this->departamento = $depa->departamento;
         $this->categoria = $depa->categoria;
+        $this->resumen = $depa->resumen;
         $this->abrirModal();
+    }
+    public function detalles($id){
+        $depa = Documento::find($id);
+        $this->id_documento = $id;
+        $this->titulo = $depa->titulo;
+        $this->autor = $depa->autor;
+        $this->anio = $depa->anio;
+        $this->idioma = $depa->idioma;
+        $this->departamento = $depa->departamento;
+        $this->categoria = $depa->categoria;
+        $this->user = $depa->user->name;
+        $this->pdf_url = $depa->pdf_url;
+        $this->publico = $depa->publico;
+        $this->resumen = $depa->resumen;
+
+        $this->abrirModalDetalle();
     }
     public function borrar(Documento $item){
         $item->delete();
         session()->flash('message', 'Documento eliminado correctamente');
         $this->cerrarModalConfirm();
     }
+
 
 }

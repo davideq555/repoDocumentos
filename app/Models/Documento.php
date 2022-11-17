@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Documento extends Model
 {
@@ -27,5 +28,10 @@ class Documento extends Model
     public function categoria()
     {
         return $this->belongsTo(Categoria::class);
+    }
+
+    public function getPdfUrlAttribute(): string
+    {
+        return Storage::disk('public')->url($this->url);
     }
 }
