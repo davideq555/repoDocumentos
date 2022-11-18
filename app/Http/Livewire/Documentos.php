@@ -34,7 +34,8 @@ class Documentos extends Component
 
     //Validacion de campos (ver documentacion de liveware)
     protected $rules = [
-        'titulo' => 'required|min:6|max:100',
+        'titulo' => 'required|min:4|max:100',
+        'resumen' => 'required|min:6|max:150',
         'autor' => 'required|max:40',
         'anio' => 'numeric|max:4',
         'idioma' => 'required|max:2',
@@ -43,7 +44,8 @@ class Documentos extends Component
 
     //Mensaje de campos relacionado a las reglas (ver documentacion de liveware)
     protected $messages = [
-        'titulo' => 'El titulo es requerido con un minimo de 6 a 100 caracteres',
+        'titulo' => 'El titulo es requerido con un minimo de 4 a 100 caracteres',
+        'resumen' => 'El resumen es requerido con un minimo de 6 a 150 caracteres',
         'autor' => 'Autor es requerido con un maximo de 40 caracteres',
         'anio' => 'Requerido y solo se acepta numeros',
         'idioma' => 'Solo se acepta 2 caracteres',
@@ -57,7 +59,7 @@ class Documentos extends Component
         return view('livewire.documentos', [
             'documentos' => Documento::when(
                 $this->search, function( $query, $search){
-                    return $query->where('titulo','LIKE', "%$search%");
+                    return $query->where('titulo','LIKE', "%$search%")->orWhere('resumen','LIKE', "%$search%");
                 }
             )->paginate(10),]);
     }
@@ -98,13 +100,15 @@ class Documentos extends Component
         $this->autor = '';
         $this->anio = '';
         $this->idioma = '';
-        $this->id_departamento = null;
-        $this->id_categoria = null;
+        $this->id_departamento = '';
+        $this->id_categoria = '';
         $this->url = '';
-        $this->user = null;
-        $this->publico = null;
+        $this->user = '';
+        $this->publico = '';
         $this->resumen = '';
         $this->pdf_url = '';
+        $this->departamento= '';
+        $this->categoria= '';
     }
     public function guardar()
     {
@@ -117,7 +121,7 @@ class Documentos extends Component
         Documento::updateOrCreate(['id'=>$this->id_documento],
             [
                 'titulo' => $this->titulo,
-                'resumen' => 'Default',
+                'resumen' => $this->resumen,
                 'url' => $path,
                 'autor' => $this->autor,
                 'anio' => $this->anio,
@@ -134,8 +138,11 @@ class Documentos extends Component
          $this->cerrarModal();
          $this->limpiarCampos();
     }
+    //Arreglar editar
     public function editar($id){
         $depa = Documento::findOrFail($id);
+        $this->categorias = Categoria::all();
+        $this->departamentos = Departamento::all();
         $this->id_documento = $id;
         $this->titulo = $depa->titulo;
         $this->autor = $depa->autor;
@@ -144,6 +151,11 @@ class Documentos extends Component
         $this->departamento = $depa->departamento;
         $this->categoria = $depa->categoria;
         $this->resumen = $depa->resumen;
+        $this->url = $depa->url;
+        //Para q se visualice bien los select
+        //revisar la url de la imagen
+        $this->id_departamento = $depa->departamento->id;
+        $this->id_categoria = $depa->categoria->id;
         $this->abrirModal();
     }
     public function detalles($id){
@@ -155,8 +167,8 @@ class Documentos extends Component
         $this->idioma = $depa->idioma;
         $this->departamento = $depa->departamento;
         $this->categoria = $depa->categoria;
-        $this->user = $depa->user->name;
-        $this->pdf_url = $depa->pdf_url;
+        $this->user = $depa->user;
+        $this->url = $depa->pdf_url;
         $this->publico = $depa->publico;
         $this->resumen = $depa->resumen;
 
