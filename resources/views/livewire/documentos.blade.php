@@ -36,7 +36,7 @@
                         </svg>
                         <x-jet-input type="text" name="" id="" 
                             wire:model="search"
-                            placeholder="Buscar..." />
+                            placeholder="Buscar..." class="w-1/2 md:w-96"/>
                     </div>
                     </div>
                 </div>

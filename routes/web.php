@@ -16,8 +16,11 @@ use App\Http\Livewire\Documentos;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('search');
 })->name('home');
+Route::get('/search', function () {
+    return view('simple-search');
+})->name('inicio');
 
 Route::middleware([
     'auth:sanctum',
