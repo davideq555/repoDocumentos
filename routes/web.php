@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Categorias;
 use App\Http\Livewire\Departamentos;
 use App\Http\Livewire\Documentos;
+use App\Http\Livewire\SearchDocumento;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,12 +16,15 @@ use App\Http\Livewire\Documentos;
 |
 */
 
+
 Route::get('/', function () {
     return view('inicio');
 })->name('home');
-Route::get('/busqueda', function () {
-    return view('livewire.search-documento');
-})->name('resultados');
+// Route::get('/busqueda', function () {
+//     return view('livewire.search-documento');
+// })->name('resultados');
+
+Route::get('lista', SearchDocumento::class)->name('lista');
 
 Route::middleware([
     'auth:sanctum',

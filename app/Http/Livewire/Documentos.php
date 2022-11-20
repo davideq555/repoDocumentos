@@ -59,7 +59,9 @@ class Documentos extends Component
         return view('livewire.documentos', [
             'documentos' => Documento::when(
                 $this->search, function( $query, $search){
-                    return $query->where('titulo','LIKE', "%$search%")->orWhere('resumen','LIKE', "%$search%")->orWhere('autor','LIKE', "%$search%");
+                    return $query->where('titulo','LIKE', "%$search%")
+                        ->orWhere('resumen','LIKE', "%$search%")
+                        ->orWhere('autor','LIKE', "%$search%");
                 }
             )->paginate(10),]);
     }
