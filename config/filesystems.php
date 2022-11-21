@@ -44,6 +44,7 @@ return [
             'throw' => false,
         ],
 
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
@@ -68,7 +69,8 @@ return [
     | the locations of the links and the values should be their targets.
     |
     */
-
+    //public_path('pdfs') => storage_path('app/pdfs'),
+    
     'links' => [
         public_path('storage') => storage_path('app/public'),
     ],

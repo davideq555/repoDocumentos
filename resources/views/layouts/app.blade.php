@@ -13,9 +13,10 @@
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
+        <link href="filepond-master/filepond.css" rel="stylesheet" />
 
         <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @vite(['resources/css/app.css', 'resources/js/app.js','resources/css/filepond.css', 'resources/js/filepond.js'])
 
         <!-- Styles -->
         @livewireStyles
@@ -44,5 +45,6 @@
         @stack('modals')
 
         @livewireScripts
+        <script src="filepond-master/filepond.js"></script>
     </body>
 </html>

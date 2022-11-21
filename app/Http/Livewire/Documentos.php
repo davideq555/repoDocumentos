@@ -19,10 +19,10 @@ class Documentos extends Component
     use WithPagination;
 
     //añadir todas los campos de los documenntos + variable q contenga todos
-    public  $titulo, $autor, $anio, $idioma, $publico, $user, $pdf_url, $id_departamento,
+    public  $titulo, $autor, $fecha, $publico, $user, $id_departamento,
     $id_categoria, $id_documento, $resumen;
     //Variable para guardar pdf
-    public $url;
+    public $url, $identificador;
     //variables para traer todas las categorias y departamentos
     public $categorias,$departamentos;
     //Pantalla emergente para crear, editar, ver mas detalles y confirmar eliminacion
@@ -31,14 +31,16 @@ class Documentos extends Component
     public $modal_detalle = false;
     //variable para busqueda
     public $search;
+    //Variables para ordenar
+    public $sort = 'id';
+    public $direction = 'desc';
 
     //Validacion de campos (ver documentacion de liveware)
     protected $rules = [
         'titulo' => 'required|min:4|max:100',
         'resumen' => 'required|min:6|max:150',
         'autor' => 'required|max:40',
-        'anio' => 'numeric|max:4',
-        'idioma' => 'required|max:2',
+        'fecha' => 'required',
         'url' => 'required|file|max:150000|mimes:pdf'
     ];
 
@@ -47,11 +49,18 @@ class Documentos extends Component
         'titulo' => 'El titulo es requerido con un minimo de 4 a 100 caracteres',
         'resumen' => 'El resumen es requerido con un minimo de 6 a 150 caracteres',
         'autor' => 'Autor es requerido con un maximo de 40 caracteres',
-        'anio' => 'Requerido y solo se acepta numeros',
-        'idioma' => 'Solo se acepta 2 caracteres',
+        'fecha' => 'Requerido, fecha de publicacion',
         'url' => 'Seleccione un archivo pdf',
     ];
 
+    public function mount(){
+        $this->identificador = rand();
+
+    }
+
+    public function updatingSearch(){
+        $this->resetPage();
+    }
  
     public function render()
     {
@@ -63,7 +72,21 @@ class Documentos extends Component
                         ->orWhere('resumen','LIKE', "%$search%")
                         ->orWhere('autor','LIKE', "%$search%");
                 }
-            )->paginate(10),]);
+            )->orderBy($this->sort,$this->direction)->paginate(10),]);
+    }
+
+    public function order($sort){
+        if($this->sort==$sort){
+            if ($this->direction == 'desc') {
+                $this->direction = 'asc';
+            } else {
+                $this->direction = 'desc';
+            }
+            
+        } else {
+            $this->direction = 'asc';
+            $this->sort = $sort;
+        }
     }
 
     public function crear(){
@@ -81,6 +104,7 @@ class Documentos extends Component
     }
     public function cerrarModal(){
         $this->modal= false;
+        $this->limpiarCampos();
     }
 
     public function abrirModalConfirm(){
@@ -100,8 +124,7 @@ class Documentos extends Component
     public function limpiarCampos(){
         $this->titulo = '';
         $this->autor = '';
-        $this->anio = '';
-        $this->idioma = '';
+        $this->fecha = '';
         $this->id_departamento = '';
         $this->id_categoria = '';
         $this->url = '';
@@ -111,23 +134,25 @@ class Documentos extends Component
         $this->pdf_url = '';
         $this->departamento= '';
         $this->categoria= '';
+        // tambien hay una funcion reset general por parte de livewire
     }
     public function guardar()
     {
         //primero valida y luego crea o actualiza
         $this->validate();
-        //Hay q verificar que no exista una url igual, si existe, concatenar la cadena con -copia
+
         // Manually specify a filename...
         // $path = Storage::putFileAs('photos', new File('/path/to/photo'), 'photo.jpg');
-        $path = $this->url->store('pdfs','public');
+        $path = $this->url->store('pdfs');
+        //$path = Storage::put($this->url);
         Documento::updateOrCreate(['id'=>$this->id_documento],
             [
                 'titulo' => $this->titulo,
                 'resumen' => $this->resumen,
                 'url' => $path,
                 'autor' => $this->autor,
-                'anio' => $this->anio,
-                'idioma' => $this->idioma,
+                'fecha' => $this->fecha,
+                'idioma' => 'ES',
                 'departamento_id' => $this->id_departamento,
                 'categoria_id' => $this->id_categoria,
                 'user_id' => auth()->id(),
@@ -139,6 +164,7 @@ class Documentos extends Component
          //pregunto si existe documento para editar, sino fue una alta
          $this->cerrarModal();
          $this->limpiarCampos();
+         $this->identificador = rand();
     }
     //Arreglar editar
     public function editar($id){
@@ -148,16 +174,17 @@ class Documentos extends Component
         $this->id_documento = $id;
         $this->titulo = $depa->titulo;
         $this->autor = $depa->autor;
-        $this->anio = $depa->anio;
+        $this->fecha = $depa->fecha;
         $this->idioma = $depa->idioma;
         $this->departamento = $depa->departamento;
         $this->categoria = $depa->categoria;
         $this->resumen = $depa->resumen;
+        
         $this->url = $depa->url;
-        //Para q se visualice bien los select
-        //revisar la url de la imagen
+
         $this->id_departamento = $depa->departamento->id;
         $this->id_categoria = $depa->categoria->id;
+
         $this->abrirModal();
     }
     public function detalles($id){
@@ -165,21 +192,27 @@ class Documentos extends Component
         $this->id_documento = $id;
         $this->titulo = $depa->titulo;
         $this->autor = $depa->autor;
-        $this->anio = $depa->anio;
+        $this->fecha = $depa->fecha;
         $this->idioma = $depa->idioma;
         $this->departamento = $depa->departamento;
         $this->categoria = $depa->categoria;
         $this->user = $depa->user;
-        $this->url = $depa->pdf_url;
+        $this->url = $depa->url;
         $this->publico = $depa->publico;
         $this->resumen = $depa->resumen;
 
         $this->abrirModalDetalle();
     }
     public function borrar(Documento $item){
-        $item->delete();
-        session()->flash('message', 'Documento eliminado correctamente');
-        $this->cerrarModalConfirm();
+        if($item->url){
+            Storage::delete($item->url);
+            $item->delete();
+            session()->flash('message', 'Documento eliminado correctamente');
+            $this->cerrarModalConfirm();
+        } else {
+            session()->flash('message', 'no se encontro documento con url');
+            $this->cerrarModalConfirm();
+        }
     }
 
 

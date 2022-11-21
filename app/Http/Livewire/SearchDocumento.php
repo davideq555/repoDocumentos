@@ -11,15 +11,17 @@ class SearchDocumento extends Component
 {
     use WithPagination; 
 
-    public $foo;
     public $search = '';
     public $page = 1;
 
     protected $queryString = [
-        'foo',
         'search' => ['except' => '', 'as' => 's'],
-        'page' => ['except' => 1],
+        'page' => ['except' => 1, 'as' => 'p'],
     ];
+
+    public function updatingSearch(){
+        $this->resetPage();
+    }
 
     public function render()
     {
@@ -30,10 +32,10 @@ class SearchDocumento extends Component
                         ->orWhere('resumen','LIKE', "%$search%")
                         ->orWhere('autor','LIKE', "%$search%");
                 }
-            )->paginate(2),])->layout('layouts.app-public');
+            )->paginate(10),])->layout('layouts.app-public');
     }
 
-    public function colorCategoria(){
-
+    public function descarga(Documento $item){
+        return Storage::disk('public')->download($item->url);
     }
 }

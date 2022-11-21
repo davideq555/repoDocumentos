@@ -11,7 +11,9 @@ class Documento extends Model
     use HasFactory;
 
     protected $fillable = [
-        'titulo','autor', 'formato', 'resumen', 'url','anio','idioma','publico',
+        'titulo','autor', 'formato', 
+        'resumen', 'url','fecha',
+        'idioma','publico',
         'departamento_id',
         'user_id',
         'categoria_id',
@@ -29,9 +31,9 @@ class Documento extends Model
     {
         return $this->belongsTo(Categoria::class);
     }
-
+    //funcion para crear un enlace pdf_url
     public function getPdfUrlAttribute(): string
     {
-        return Storage::disk('public')->url($this->url);
+        return Storage::disk()->url($this->url);
     }
 }

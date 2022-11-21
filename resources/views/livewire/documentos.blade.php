@@ -55,17 +55,22 @@
             <table class="w-full text-md bg-blue-300 shadow-md rounded mb-4">
                 <thead>
                     <tr class="border-b">
-                        <th class="text-left p-3 px-3 text-sm tracking-wide text-left">Titulo</th>
-                        <th class="text-left p-3 px-1 text-sm tracking-wide text-left">Autor</th>
-                        <th class="text-left p-3 px-1 text-sm tracking-wide text-left">Idioma</th>
-                        <th class="text-left p-3 px-1 text-sm tracking-wide text-left">Departamento</th>
-                        <th class="text-left p-3 px-1 text-sm tracking-wide text-left">Categoria</th>
+                        <th class="text-left p-3 px-3 text-sm tracking-wide cursor-pointer"
+                            wire:click="order('titulo')">Titulo</th>
+                        <th class="text-left p-3 px-1 text-sm tracking-wide cursor-pointer"
+                            wire:click="order('autor')">Autor</th>
+                        <th class="text-left p-3 px-1 text-sm tracking-wide cursor-pointer"
+                            wire:click="order('idioma')">Idioma</th>
+                        <th class="text-left p-3 px-1 text-sm tracking-wide cursor-pointer"
+                            wire:click="order('departamento_id')">Departamento</th>
+                        <th class="text-left p-3 px-1 text-sm tracking-wide cursor-pointer"
+                            wire:click="order('categoria_id')">Categoria</th>
 
                         <th class="p-3 px-5 flex justify-center">Acciones</th>
                     </tr>
                 </thead>
                 <tbody class="divide">
-                    @if (!is_null($documentos))
+                    @if ($documentos->count())
                         @foreach ($documentos as $item)                        
                             <tr class="border-b hover:bg-orange-100 bg-gray-100 ">
                                 <td class="p-3 px-3 text-sm">{{ $item->titulo}}</td>
@@ -108,7 +113,7 @@
                         @endforeach
                         @else
                         <tr>
-                            <td class="p-3 px-5">No hay documentos cargados</td>
+                            <td class="p-3 px-5">No hay documentos</td>
                         </tr>
                         @endif                
                     </tbody>

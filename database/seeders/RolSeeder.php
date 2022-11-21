@@ -30,12 +30,12 @@ class RolSeeder extends Seeder
         $permiso1->assignRole($rol_colaborador);
 
         //Usuario colaborador
-        $colaUser = User::factory()->create([
-            'email' => 'colaborador@gmail.com',
-            'password' => bcrypt('pass1234'),
-        ]);
         $adminUser = User::factory()->create([
             'email' => 'davideq555@gmail.com',
+            'password' => bcrypt('pass1234'),
+        ]);
+        $colaUser = User::factory()->create([
+            'email' => 'colaborador@gmail.com',
             'password' => bcrypt('pass1234'),
         ]);
         $adminUser->assignRole($rol_admin);

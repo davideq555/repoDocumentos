@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
+use App\Models\Documento;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,10 +22,15 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
+        Storage::makeDirectory('pdfs');
+
         $this->call([
             CategoriaSeeder::class,
             DepartamentoSeeder::class,
             RolSeeder::class,
         ]);
+
+        Documento::factory(50)->create();
     }
 }

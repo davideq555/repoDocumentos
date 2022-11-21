@@ -18,7 +18,7 @@
                 Resumen: <strong>{{$this->resumen}}</strong>
             </div>
             <div class="mb-4">
-                Autor: <strong>{{$this->autor}}</strong> Fecha de publicacion: {{$this->anio}}
+                Autor: <strong>{{$this->autor}}</strong> Fecha de publicacion: {{$this->fecha}}
             </div>           
             <div class="mb-4">
                 <x-jet-label value="Idioma del documento"  />
@@ -33,10 +33,10 @@
             <div class="mb-4">
                 Publico: <input type="checkbox" checked={{$this->publico}} disabled> </input>
             <div class="mb-4">
-                <embed src='{{$this->pdf_url}}' type="application/pdf" width="100%" height="600px" />
+                <embed src='{{Storage::url($item->url)}}' type="application/pdf" width="100%" height="600px" />
             </div>
             <div class="mb-4">
-                <a href='{{$this->pdf_url}}' target="_blank" rel="noopener noreferrer">Ampliar</a>
+                <a href='{{Storage::url($item->url)}}' target="_blank" rel="noopener noreferrer">Ampliar</a>
             </div>
         </x-slot>
         <x-slot name='footer'>

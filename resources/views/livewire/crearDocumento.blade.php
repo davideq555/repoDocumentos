@@ -23,21 +23,20 @@
                 <x-jet-input-error for='autor' class="mt-2" />
             </div>
             <div class="mb-4">
-                <x-jet-label value="Año" for="anio" />
-                <x-jet-input type='number' name="anio" class="w-full" wire:model='anio' />
-                <x-jet-input-error for='anio' class="mt-2" />
+                <x-jet-label value="Fecha de su publicacion" for="fecha" />
+                <x-jet-input type='date' name="fecha" class="w-full" wire:model='fecha' />
+                <x-jet-input-error for='fecha' class="mt-2" />
             </div>
             <div class="mb-4">
-                <x-jet-label value="Idioma" for="idioma" />
-                <x-jet-input type='text' name="idioma" class="w-full" wire:model='idioma' />
-                <x-jet-input-error for='idioma' class="mt-2" />
-            </div>
-            <div class="mb-4">
-                <x-jet-label value="Documento en formato pdf" for="url" />
-                <x-jet-input type='file' name="url" class="w-full" wire:model='url'/>
-                <div wire:loading wire:target="url" class="mt-2">Cargando...</div>
-                <section x-show="!is_null($url)"><a href="{{$url}}">archivo cargado</a></section>
-                <x-jet-input-error for='url' class="mt-2" />
+                @if ($this->url != '')
+                    <a href="{{Storage::url($this->url)}}" target="_blank" rel="noopener noreferrer"> archivo cargado</a>
+                @else
+                    <x-jet-label value="Documento en formato pdf" for="url" />
+                    <x-jet-input type='file' name="url" class="w-full" wire:model='url' id="{{$identificador}}" />
+                    <div wire:loading wire:target="url" class="mt-2">Cargando...</div>
+                    <x-jet-input-error for='url' class="mt-2" />
+                @endif
+                {{-- Crear un fi para sabir si existe el pdf url previamente --}}
             </div>
             <div class="mb-4">
                 <x-jet-label value="Categoria" for="id_categoria" />
