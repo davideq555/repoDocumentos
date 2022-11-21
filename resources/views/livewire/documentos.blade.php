@@ -55,12 +55,12 @@
             <table class="w-full text-md bg-blue-300 shadow-md rounded mb-4">
                 <thead>
                     <tr class="border-b">
+                        <th class="text-center p-3 px-1 text-sm tracking-wide cursor-pointer"
+                            wire:click="order('id')">Id</th>
                         <th class="text-left p-3 px-3 text-sm tracking-wide cursor-pointer"
                             wire:click="order('titulo')">Titulo</th>
                         <th class="text-left p-3 px-1 text-sm tracking-wide cursor-pointer"
                             wire:click="order('autor')">Autor</th>
-                        <th class="text-left p-3 px-1 text-sm tracking-wide cursor-pointer"
-                            wire:click="order('idioma')">Idioma</th>
                         <th class="text-left p-3 px-1 text-sm tracking-wide cursor-pointer"
                             wire:click="order('departamento_id')">Departamento</th>
                         <th class="text-left p-3 px-1 text-sm tracking-wide cursor-pointer"
@@ -73,9 +73,9 @@
                     @if ($documentos->count())
                         @foreach ($documentos as $item)                        
                             <tr class="border-b hover:bg-orange-100 bg-gray-100 ">
+                                <td class="p-3 px-1 w-16 text-sm">{{ $item->id}}</td>
                                 <td class="p-3 px-3 text-sm">{{ $item->titulo}}</td>
                                 <td class="p-3 px-1 text-sm">{{ $item->autor}}</td>
-                                <td class="p-3 px-1 w-16 text-sm">{{ $item->idioma}}</td>
                                 <td class="p-3 px-1 w-24 text-sm">{{ $item->departamento->nombre}}</td>
                                 <td class="p-3 px-1 w-24 text-sm">{{ $item->categoria->tipo}}</td>
                                 <div class="hidden md:block">

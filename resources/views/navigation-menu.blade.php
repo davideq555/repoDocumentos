@@ -5,7 +5,7 @@
             'name' => 'Inicio',
             'route' => route('dashboard'),
             'active' => request()->routeIs('dashboard'),
-            'role' => 'Colaborador|Admin'
+            'role' => 'Colaborador|Admin|Invitado'
         ],[
             'name' => 'Usuarios',
             'route' => '#',
@@ -26,7 +26,7 @@
             'route' => route('documentos'),
             'active' => request()->routeIs('documentos'),
             'role' => 'Colaborador|Admin'
-        ],
+        ],  
 ];
 @endphp
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
