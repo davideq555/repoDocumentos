@@ -5,6 +5,9 @@
                 <x-jet-input type='search' name="titulo" class="w-1/2 dark:bg-slate-800 dark:text-white" wire:model="search" 
                 placeholder="Buscar documento por titulo, resumen o autor..."/>
             </div>
+            @if($open)
+                @include('livewire.detalle-publico')
+            @endif
             @foreach ($documentos as $item)
             <div class="rounded-xl p-5 shadow-md bg-white dark:bg-gray-800 my-4">
                 <div class="flex w-full items-center justify-between border-b pb-3">
@@ -25,8 +28,8 @@
                         
                         <div>
                             <div class="flex items-center justify-end text-slate-500">
-                                <div class="flex space-x-4 md:space-x-8">
-                                    <div class="flex cursor-pointer items-center transition hover:text-slate-600">
+                                <div class="flex space-x-4 md:space-x-8" wire:click="detalles({{$item}})">
+                                    <div class="flex cursor-pointer items-center transition hover:text-slate-600" >
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500 cursor-pointer" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

@@ -13,6 +13,13 @@ class SearchDocumento extends Component
 
     public $search = '';
     public $page = 1;
+    public $open = false;
+    public $docu, $identificador;
+
+    public function mount(){
+        $this->identificador = rand();
+        $this->docu = new Documento();
+    }
 
     protected $queryString = [
         'search' => ['except' => '', 'as' => 's'],
@@ -37,5 +44,11 @@ class SearchDocumento extends Component
 
     public function descarga(Documento $item){
         return Storage::disk('public')->download($item->url);
+    }
+
+    public function detalles(Documento $item){
+        $this->docu = $item;
+        $this->identificador = rand();
+        $this->open = true;
     }
 }

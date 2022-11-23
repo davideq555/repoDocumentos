@@ -22,9 +22,7 @@ use App\Http\Livewire\MostrarUsers;
 Route::get('/', function () {
     return view('inicio');
 })->name('home');
-// Route::get('/busqueda', function () {
-//     return view('livewire.search-documento');
-// })->name('resultados');
+
 
 Route::get('lista', SearchDocumento::class)->name('lista');
 
@@ -41,5 +39,4 @@ Route::middleware([
     Route::get('/departamentos', Departamentos::class)->name('departamentos');
     Route::get('/documentos', Documentos::class)->name('documentos');
     Route::get('/usuarios', MostrarUsers::class)->name('usuarios');
-
 });
