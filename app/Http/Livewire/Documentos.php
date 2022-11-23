@@ -12,6 +12,8 @@ use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\DocumentosExport;
 
 class Documentos extends Component
 {
@@ -20,7 +22,7 @@ class Documentos extends Component
 
     //añadir todas los campos de los documenntos + variable q contenga todos
     public  $titulo, $autor, $fecha, $publico, $user, $id_departamento,
-    $id_categoria, $id_documento, $resumen;
+    $id_categoria, $id_documento, $resumen, $docu;
     //Variable para guardar pdf
     public $url, $identificador;
     //variables para traer todas las categorias y departamentos
@@ -37,27 +39,34 @@ class Documentos extends Component
 
     //Validacion de campos (ver documentacion de liveware)
     protected $rules = [
-        'titulo' => 'required|min:4|max:100',
-        'resumen' => 'required|min:6|max:150',
-        'autor' => 'required|max:40',
-        'fecha' => 'required',
-        'url' => 'required|file|max:150000|mimes:pdf'
+        'docu.titulo' => 'required|min:4|max:100',
+        'docu.resumen' => 'required|min:6|max:150',
+        'docu.autor' => 'required|max:40',
+        'docu.fecha' => 'required',
+        'docu.url' => 'required|file|max:150000|mimes:pdf',
+        'docu.categoria_id' => 'required',
+        'docu.departamento_id' => 'required'
     ];
+
+    protected $listeners = ['render'];
 
     //Mensaje de campos relacionado a las reglas (ver documentacion de liveware)
     protected $messages = [
-        'titulo' => 'El titulo es requerido con un minimo de 4 a 100 caracteres',
-        'resumen' => 'El resumen es requerido con un minimo de 6 a 150 caracteres',
-        'autor' => 'Autor es requerido con un maximo de 40 caracteres',
-        'fecha' => 'Requerido, fecha de publicacion',
-        'url' => 'Seleccione un archivo pdf',
+        'docu.titulo' => 'El titulo es requerido con un minimo de 4 a 100 caracteres',
+        'docu.resumen' => 'El resumen es requerido con un minimo de 6 a 150 caracteres',
+        'docu.autor' => 'Autor es requerido con un maximo de 40 caracteres',
+        'docu.fecha' => 'Requerido, fecha de publicacion',
+        'docu.url' => 'Seleccione un archivo pdf',
+        'docu.categoria_id' => 'Requirido',
+        'docu.departamento_id' => 'Requirido',
     ];
 
     public function mount(){
         $this->identificador = rand();
+        $this->docu = new Documento();
 
     }
-
+// Accion - variaable (en este caso, cuando la variable Search cambie, se resetea la pagina)
     public function updatingSearch(){
         $this->resetPage();
     }
@@ -81,8 +90,7 @@ class Documentos extends Component
                 $this->direction = 'asc';
             } else {
                 $this->direction = 'desc';
-            }
-            
+            }        
         } else {
             $this->direction = 'asc';
             $this->sort = $sort;
@@ -131,78 +139,60 @@ class Documentos extends Component
         $this->user = '';
         $this->publico = '';
         $this->resumen = '';
-        $this->pdf_url = '';
         $this->departamento= '';
         $this->categoria= '';
+        $this->docu= '';
         // tambien hay una funcion reset general por parte de livewire
     }
-    public function guardar()
-    {
-        //primero valida y luego crea o actualiza
-        $this->validate();
-
-        // Manually specify a filename...
-        // $path = Storage::putFileAs('photos', new File('/path/to/photo'), 'photo.jpg');
-        $path = $this->url->store('pdfs');
-        //$path = Storage::put($this->url);
-        Documento::updateOrCreate(['id'=>$this->id_documento],
-            [
-                'titulo' => $this->titulo,
-                'resumen' => $this->resumen,
-                'url' => $path,
-                'autor' => $this->autor,
-                'fecha' => $this->fecha,
-                'idioma' => 'ES',
-                'departamento_id' => $this->id_departamento,
-                'categoria_id' => $this->id_categoria,
-                'user_id' => auth()->id(),
-                'formato' => 'pdf',
-            ]);
-         
-         session()->flash('message',
-            $this->id_documento ? '¡Actualización exitosa!' : '¡Alta Exitosa!');
-         //pregunto si existe documento para editar, sino fue una alta
-         $this->cerrarModal();
-         $this->limpiarCampos();
-         $this->identificador = rand();
-    }
     //Arreglar editar
-    public function editar($id){
-        $depa = Documento::findOrFail($id);
+    public function editar(Documento $docuAux){
+        $this->docu = $docuAux;
         $this->categorias = Categoria::all();
         $this->departamentos = Departamento::all();
-        $this->id_documento = $id;
-        $this->titulo = $depa->titulo;
-        $this->autor = $depa->autor;
-        $this->fecha = $depa->fecha;
-        $this->idioma = $depa->idioma;
-        $this->departamento = $depa->departamento;
-        $this->categoria = $depa->categoria;
-        $this->resumen = $depa->resumen;
-        
-        $this->url = $depa->url;
-
-        $this->id_departamento = $depa->departamento->id;
-        $this->id_categoria = $depa->categoria->id;
-
         $this->abrirModal();
     }
+    
+    public function actualizar(){
+        //primero valida y luego crea o actualiza
+        $this->validate();
+        
+        // Manually specify a filename...
+        // $path = Storage::putFileAs('photos', new File('/path/to/photo'), 'photo.jpg');
+        // if (Storage::url($this->url)){
+        //     $path = $this->url;
+        // } else {
+        //     $path = $this->url->store('pdfs');
+        // }
+        // if($this->url){
+        //     Storage::delete([$this->docu->url]);
+        //     $this->docu->url = $this->url->store('pdfs');
+        // }
+        $this->docu->saved();
+         
+        session()->flash('message','¡Actualización exitosa!');
+        $this->cerrarModal();
+        $this->limpiarCampos();
+        $this->identificador = rand();
+    }
+
     public function detalles($id){
-        $depa = Documento::find($id);
-        $this->id_documento = $id;
-        $this->titulo = $depa->titulo;
-        $this->autor = $depa->autor;
-        $this->fecha = $depa->fecha;
-        $this->idioma = $depa->idioma;
-        $this->departamento = $depa->departamento;
-        $this->categoria = $depa->categoria;
-        $this->user = $depa->user;
-        $this->url = $depa->url;
-        $this->publico = $depa->publico;
-        $this->resumen = $depa->resumen;
+        $docu = Documento::find($id);
+        $this->id_documento = $docu->id;
+        $this->titulo = $docu->titulo;
+        $this->autor = $docu->autor;
+        $this->fecha = $docu->fecha;
+        $this->idioma = $docu->idioma;
+        $this->departamento = $docu->departamento;
+        $this->categoria = $docu->categoria;
+        $this->user = $docu->user;
+        $this->url = $docu->url;
+        $this->publico = $docu->publico;
+        $this->resumen = $docu->resumen;
+        $this->identificador = rand();
 
         $this->abrirModalDetalle();
     }
+
     public function borrar(Documento $item){
         if($item->url){
             Storage::delete($item->url);
@@ -215,5 +205,14 @@ class Documentos extends Component
         }
     }
 
+    public function eliminarArchivo(){
+        Storage::delete($this->url);
+        $this->url = '';
+    }
+
+    public function export() 
+    {
+        return Excel::download(new DocumentosExport, 'documentosAll.xlsx');
+    }
 
 }

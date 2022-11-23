@@ -8,7 +8,7 @@
             'role' => 'Colaborador|Admin|Invitado'
         ],[
             'name' => 'Usuarios',
-            'route' => '#',
+            'route' => 'usuarios',
             'active' => request()->routeIs('usuarios'),
             'role' => 'Admin'
         ],[

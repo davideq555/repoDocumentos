@@ -33,7 +33,7 @@ class RolSeeder extends Seeder
         $permiso4->assignRole($rol_invitado);
 
         $adminUser = User::factory()->create([
-            'email' => 'davideq555@gmail.com',
+            'email' => 'admin@gmail.com',
             'password' => bcrypt('pass1234'),
         ]);
         //Usuario colaborador

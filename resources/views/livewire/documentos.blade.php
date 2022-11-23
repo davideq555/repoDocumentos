@@ -14,18 +14,14 @@
             <div class="p-2 flex">
                 <div class="flex items-center pb-2">
                     <div class="flex items-center justify-between space-x-2">
-                        <x-jet-button wire:click="" type="button" class="space-x-2">
+                        <x-jet-button action="{{ route('exportExcel')}}" type="button" class="space-x-2">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
                                 <path fill-rule="evenodd" d="M13.75 7h-3V3.66l1.95 2.1a.75.75 0 101.1-1.02l-3.25-3.5a.75.75 0 00-1.1 0L6.2 4.74a.75.75 0 001.1 1.02l1.95-2.1V7h-3A2.25 2.25 0 004 9.25v7.5A2.25 2.25 0 006.25 19h7.5A2.25 2.25 0 0016 16.75v-7.5A2.25 2.25 0 0013.75 7zm-3 0h-1.5v5.25a.75.75 0 001.5 0V7z" clip-rule="evenodd" />
                             </svg>
                             <div>Export</div>
+                            <a href="{{route('exportExcel')}}" target="_blank" rel="noopener noreferrer">excel</a>
                         </x-jet-button>
-                        <x-jet-button wire:click="crear()" type="button" class="space-x-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                                <path fill-rule="evenodd" d="M4.5 2A1.5 1.5 0 003 3.5v13A1.5 1.5 0 004.5 18h11a1.5 1.5 0 001.5-1.5V7.621a1.5 1.5 0 00-.44-1.06l-4.12-4.122A1.5 1.5 0 0011.378 2H4.5zM10 8a.75.75 0 01.75.75v1.5h1.5a.75.75 0 010 1.5h-1.5v1.5a.75.75 0 01-1.5 0v-1.5h-1.5a.75.75 0 010-1.5h1.5v-1.5A.75.75 0 0110 8z" clip-rule="evenodd" />
-                            </svg>
-                            <div>Nuevo</div>
-                        </x-jet-button>
+                        @livewire('crear-documento')
                         <div class="flex bg-gray-50 items-center p-2 rounded-md self-right">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20"
                                 fill="currentColor">
@@ -42,7 +38,7 @@
             
             {{-- modal de editar y crear  --}}
             @if($modal)
-                @include('livewire.crearDocumento')
+                @include('livewire.editarDocumento')
             @endif
             
             {{-- modal de eliminacion  --}}
@@ -90,7 +86,7 @@
                                         
                                     </button>
                                     <button type="button"
-                                        wire:click="editar({{$item->id}})" 
+                                        wire:click="editar({{$item}})" 
                                         class="bg-blue-800 flex hover:bg-blue-500 text-white py-1 px-2 rounded-2xl focus:outline-none focus:shadow-outline">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />

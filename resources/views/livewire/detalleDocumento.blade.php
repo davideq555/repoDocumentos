@@ -31,12 +31,13 @@
                 Subido por: <strong>{{$this->user->name}}</strong> Idioma: <strong>{{$this->idioma}}</strong>
             </div>
             <div class="mb-4">
-                Publico: <input type="checkbox" checked={{$this->publico}} disabled> </input>
-            <div class="mb-4">
-                <embed src='{{Storage::url($item->url)}}' type="application/pdf" width="100%" height="600px" />
+                Publico: <input type="checkbox" checked={{$this->publico}} disabled> 
             </div>
             <div class="mb-4">
-                <a href='{{Storage::url($item->url)}}' target="_blank" rel="noopener noreferrer">Ampliar</a>
+                <embed src='{{Storage::url($this->url)}}' type="application/pdf" width="100%" height="600px" id="{{$identificador}}"/>
+            </div>
+            <div class="mb-4">
+                <a href='{{Storage::url($this->url)}}' target="_blank" rel="noopener noreferrer" id="{{$identificador}}">Ampliar</a>
             </div>
         </x-slot>
         <x-slot name='footer'>
